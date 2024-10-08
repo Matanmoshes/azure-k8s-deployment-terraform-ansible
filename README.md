@@ -364,3 +364,8 @@ terraform destroy
   - Look at the logs of failing pods: `kubectl logs <pod_name> -n <namespace>`
   - Verify network connectivity between nodes.
 
+---
+
+### Reference:
+- https://medium.com/@kvihanga/how-to-set-up-a-kubernetes-cluster-on-ubuntu-22-04-lts-433548d9a7d0
+- https://medium.com/@venkataramarao.n/kubernetes-setup-using-ansible-script-8dd6607745f6
