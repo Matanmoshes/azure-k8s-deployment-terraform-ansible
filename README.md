@@ -22,20 +22,54 @@ The infrastructure deployed consists of the following components:
 
 **Diagram:**
 
-```
-Internet
-   |
-[Bastion Host]
-   |
-[Virtual Network]
-   |
-+------------------------+
-|  Private Subnet        |
-|                        |
-|  [Ansible Control VM]  |
-|  [Control Plane VM]    |
-|  [Worker Node VMs]     |
-+------------------------+
+```SCSS
+                                    Internet
+                                        |
+                                        |
+                                 [Public IP Address]
+                                        |
+                                        |
+                                   ┌───────────┐
+                                   │ Bastion   │
+                                   │   Host    │
+                                   └───────────┘
+                                        |
+                         SSH over Public IP (Port 22)
+                                        |
+                             ───────────────────────
+                             |                    |
+                      ┌─────────────┐       ┌─────────────┐
+                      │  Virtual    │       │  Network    │
+                      │  Network    │       │  Security   │
+                      │  (VNet)     │       │  Groups     │
+                      └─────────────┘       └─────────────┘
+                             |                    |
+                ┌──────────────────────────┐      |
+                |        10.0.0.0/16       |      |
+                |                          |      |
+        ┌──────────────────┐      ┌──────────────────┐
+        |  Public Subnet   |      |  Private Subnet  |
+        |   10.0.1.0/24    |      |   10.0.2.0/24    |
+        └──────────────────┘      └──────────────────┘
+                |                          |
+                |                          |
+        ┌─────────────┐             ┌───────────────────────┐
+        │ Bastion     │             │ Ansible Control VM    │
+        │   Host      │             │ Control Plane VM      │
+        └─────────────┘             │ Worker Node 1         │
+                                    │ Worker Node 2         │
+                                    └───────────────────────┘
+                |                          | 
+                |                          |
+         SSH via Private IP           Internal Networking
+          (Port 22 allowed)             (Kubernetes Traffic)
+                |                          |
+                |                          |
+        ┌─────────────┐             ┌───────────────────────┐
+        │  Storage    │────────────▶│ Managed Disks for VMs │
+        │  Accounts   │             └───────────────────────┘
+        └─────────────┘
+
 ```
 
 ## Prerequisites
