@@ -1,0 +1,9 @@
+# terraform/terraform.tfvars
+
+subscription_id = ""
+resource_group  = ""
+tenant_id       = ""
+client_id       = ""
+client_secret   = ""
+my_public_ip    = ""
+ssh_public_key  = ""
